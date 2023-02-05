@@ -10,3 +10,9 @@ with open('output.txt',"w",encoding="utf-8") as f:
     for i in json_music:
         print(i['url'][58:],file=f)
         print(i['name']+' - '+i['artist'],file=f)
+with open('output.txt',"r",encoding="utf-8") as f:
+    s=f.read()
+    s=s.replace("/","、")
+    s=s.replace("|","、")
+with open('output.txt',"w",encoding="utf-8") as f:
+    print(s,file=f)
