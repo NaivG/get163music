@@ -1,11 +1,13 @@
 @echo off
 md music
-set version=b0.2.7
+set version=b0.2.8
 set runmode=normal
 set dlyric=false
 cls
 echo running in normal mode
 echo type "switchtoartist" to switch artist mode
+echo since b0.2.8 update,you can use pullplaylist beta.
+echo it will return music name including artist.
 echo.
 echo since b0.2.7 update,you can choose whether download lyric or not.
 echo type "nolyric" or "downloadlyric" to switch it.
