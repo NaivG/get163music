@@ -59,9 +59,9 @@ if exist "%cd%\backup\%name%.mp3" (
 
 echo =============œ¬‘ÿ÷–=============
 if "%runmode%"=="artist" (
-    aria2c.exe --file-allocation=none -V --max-connection-per-server=16 --min-split-size=1M --dir=music --out="%name% - %artist%.mp3" http://music.163.com/song/media/outer/url?id=%id%.mp3
+    aria2c.exe --file-allocation=none -V --max-connection-per-server=16 --min-split-size=1M --dir="music" --out="%name% - %artist%.mp3" http://music.163.com/song/media/outer/url?id=%id%.mp3
 ) else (
-    aria2c.exe --file-allocation=none -V --max-connection-per-server=16 --min-split-size=1M --dir=music --out="%name%.mp3" http://music.163.com/song/media/outer/url?id=%id%.mp3
+    aria2c.exe --file-allocation=none -V --max-connection-per-server=16 --min-split-size=1M --dir="music" --out="%name%.mp3" http://music.163.com/song/media/outer/url?id=%id%.mp3
 )
 ::wget http://music.163.com/song/media/outer/url?id=%id%.mp3 --output-file="%name%.mp3"
 ::title Download Music 0.1-Downloading %id%
@@ -70,13 +70,16 @@ if "%runmode%"=="artist" (
 
 if "%dlyric%"=="false" goto :idd
 set lyric_url=http://music.163.com/api/song/media?id=%id%
-set "lyric_name=%name%.lrc"
+if "%runmode%"=="artist" (
+    set "lyric_name=%name% - %artist%.lrc"
+) else (
+    set "lyric_name=%name%.lrc"
+)
 if exist "%cd%\music\%name%.lrc" (
     echo exist.skipping...
     goto :idd
 )
 python getlyric.py
-move "%lyric_name%" .\music
 
 goto idd
 

@@ -16,6 +16,6 @@ lyric_json = req.json()
 json_str = json.dumps(lyric_json,indent=2,ensure_ascii=False)
 temp_dict = json.loads(json_str)
 print("获取成功，正在转码...")
-with open(lyric_name,"w",encoding="utf-8") as f:
+with open('./music/' + lyric_name, "w", encoding="utf-8") as f:
     print(temp_dict["lyric"],file=f)
 print("保存至" + lyric_name)

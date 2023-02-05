@@ -9,7 +9,7 @@ set /a n=0
 set /a m=0
 setlocal ENABLEDELAYEDEXPANSION
 echo 读取所有文件字节大小
-for /r %%i in (*) do (
+for /r %%i in (*.mp3) do (
    set /a m+=1
    echo %%i [%%~zi]
    if /i not defined s[%%~zi] (
