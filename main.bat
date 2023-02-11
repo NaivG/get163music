@@ -1,6 +1,6 @@
 @echo off
 md music
-set version=b0.3.0
+set version=b0.3.1
 set runmode=normal
 set dlyric=false
 set downmode=false
@@ -22,30 +22,31 @@ title Download Music %version%
 set /p id=:
 
 if "%id%"=="multithreads" (
-    echo switched.
     if "%downmode%"=="false" (
         set downmode=true
+        echo switched to true.
     ) else (
         set downmode=false
+        echo switched to false.
     )
     goto :idd
 )
 if "%id%"=="switchtoartist" (
-    echo switched.
     set runmode=artist
+    echo switched to artist mode.
     goto :setupartist
 )
 if "%id%"=="artist" (
     goto :setupartist
 )
 if "%id%"=="nolyric" (
-    echo switched.
     set dlyric=false
+    echo switched to false.
     goto :idd
 )
 if "%id%"=="downloadlyric" (
-    echo switched.
     set dlyric=true
+    echo switched to true.
     goto :idd
 )
 
@@ -56,6 +57,9 @@ if "%runmode%"=="artist" (
 ) else (
     title Download Music %version%-Downloading %id%
 )
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 rem if "%runmode%"=="artist" (
 rem     if exist "%cd%\music\%name% - %artist%.mp3" (
 rem         echo exist.skipping...
@@ -96,10 +100,14 @@ rem     echo exist.skipping...
 rem     goto :idd
 rem )
 rem python getlyric.py
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 if "%downmode%"=="false" (
-    call download.module
+    call bin\download.module
 ) else (
-    start multithreads %id% "%name%" %dlyric% %runmode% %artist%
+    echo call multithreads...
+    start bin\multithreads %id% "%name%" %dlyric% %runmode% %artist%
     ping -n 2 127.1>nul
 )
 goto idd
@@ -109,8 +117,3 @@ set /p artist=setupartist:
 echo switch to %artist%.
 pause
 goto :idd
-
-echo Done!
-echo Press Any Key To Exit...
-pause>nul
-exit

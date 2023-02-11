@@ -15,7 +15,7 @@ if "%music_url%"=="old" (
 echo ÒÑÇÐ»»¡£
 goto :old
 )
-python get.py
+python bin\get.py
 if exist output.txt notepad output.txt
 del /s /q output.txt
 goto :old
@@ -30,7 +30,7 @@ if "%playlist_id%"=="old" (
 echo ÒÑÇÐ»»¡£
 goto :old
 )
-python getplaylistbeta.py
+python bin\getplaylistbeta.py
 if exist output.txt notepad output.txt
 del /s /q output.txt
 goto :new
