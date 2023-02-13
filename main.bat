@@ -1,6 +1,6 @@
 @echo off
 md music
-set version=b0.3.1
+set version=b0.3.2
 set runmode=normal
 set dlyric=false
 set downmode=false
@@ -19,7 +19,7 @@ echo since b0.2.7 update,you can choose whether download lyric or not.
 echo type "nolyric" or "downloadlyric" to switch it.
 :idd
 title Download Music %version%
-set /p id=:
+set /p id=id:
 
 if "%id%"=="multithreads" (
     if "%downmode%"=="false" (
@@ -103,6 +103,8 @@ rem python getlyric.py
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+if "%lastid%"=="%id%" call :existid
+
 if "%downmode%"=="false" (
     call bin\download.module
 ) else (
@@ -110,10 +112,25 @@ if "%downmode%"=="false" (
     start bin\multithreads %id% "%name%" %dlyric% %runmode% %artist%
     ping -n 2 127.1>nul
 )
+
+set lastid=%id%
+
 goto idd
 
 :setupartist
 set /p artist=setupartist:
 echo switch to %artist%.
 pause
+goto :idd
+
+:existid
+set choices="N"
+echo WARN:you are trying to download a music 
+echo        which id is equal to the last music.
+echo      usually,it will appear because the pullplaylist beta
+echo        will place two blank line.
+echo      type "Y" to ingoring this download.
+set /p choices=:
+if "%choices%"=="Y" goto :EOF
+echo skipping...
 goto :idd
