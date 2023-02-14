@@ -1,12 +1,21 @@
 @echo off
 md music
-set version=b0.3.2
+set version=b0.3.3
+set artist=null
 set runmode=normal
 set dlyric=false
 set downmode=false
+set downmethod=old
+set downloadmodule=multithreads.bat
+set batpath=%cd%\
 cls
 echo running in normal mode
 echo type "switchtoartist" to switch artist mode
+echo.
+echo since b0.3.3 update,you can switch download method.
+echo new version needn't to type music name.
+echo this default is old.
+echo type "downloadmethod" to switch it.
 echo.
 echo since b0.3.0 update,download music can be in multithreads.
 echo this default is false.
@@ -49,8 +58,20 @@ if "%id%"=="downloadlyric" (
     echo switched to true.
     goto :idd
 )
+if "%id%"=="downloadmethod" (
+    if "%downmethod%"=="old" (
+        set downmethod=new
+        echo switched to new.
+    ) else (
+        set downmethod=old
+        echo switched to old.
+    )
+    goto :idd
+)
 
-set /p name=name:
+if "%downmethod%"=="old" (
+    set /p name=name:
+)
 
 if "%runmode%"=="artist" (
     title Download Music %version%-Downloading %id%  artist:%artist%
@@ -105,12 +126,23 @@ rem python getlyric.py
 
 if "%lastid%"=="%id%" call :existid
 
-if "%downmode%"=="false" (
-    call bin\download.module
+if "%downmethod%"=="old" (
+    if "%downmode%"=="false" (
+       call bin\download.module
+    ) else (
+       echo call multithreads...
+       start bin\multithreads %id% "%name%" %dlyric% %runmode% %artist% %downmode%
+       ping -n 2 127.1>nul
+    )
 ) else (
-    echo call multithreads...
-    start bin\multithreads %id% "%name%" %dlyric% %runmode% %artist%
-    ping -n 2 127.1>nul
+    if "%downmode%"=="false" (
+       python bin\pullrequests.py
+    ) else (
+       echo call multithreads...
+       rem start bin\multithreads %id% "%name%" %dlyric% %runmode% %artist% %downmode%
+       start python bin\pullrequests.py %id% %dlyric% %runmode% %artist% %downmode%
+       ping -n 2 127.1>nul
+    )
 )
 
 set lastid=%id%
